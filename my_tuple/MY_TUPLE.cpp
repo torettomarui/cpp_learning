@@ -7,7 +7,7 @@ namespace MY_TUPLE
     template <typename ... __args_type>
     class tuple;
 
-    //参数中什么都没有的情况
+    //类模版特化，参数中什么都没有的情况
     template <>
     class tuple <>
     {
@@ -41,7 +41,8 @@ namespace MY_TUPLE
     struct element;
 
 
-    //模版特化的结果，即，如果tuple中没有元素就使用下面这个模版
+    //模版偏特化的结果，即，如果tuple中没有元素就使用下面这个模版
+    //偏特化的过程中，被偏特化的那个模版参数不出现在一开始的类模版参数中，只出现在偏特化的模版参数中，比如此例中的tuple<>
     template <int N>
     //同样，使用类模版的时候要显示声明模版参数
     struct element<N, MY_TUPLE::tuple<>> {//就是说当tuple里面是空着的话，如果N大于0，那么就出错
@@ -55,7 +56,7 @@ namespace MY_TUPLE
 
 
     //下面这个是模版特化的结果，即，如果N=0就使用下面这个模版
-    //并且使用类模版的时候要显示声明模版参数
+    //偏特化的过程中，被偏特化的那个模版参数不出现在一开始的类模版参数中，只出现在偏特化的模版参数中，比如此例中的0
     template <typename __this_type, typename ... __args_type>
     struct element<0, MY_TUPLE::tuple<__this_type, __args_type ...>>
     {
@@ -74,6 +75,13 @@ namespace MY_TUPLE
     }
 }
 
+
+//稍微总结一下模版的使用
+//1.函数模版不需要显示声明模版参数，但在一些情况下也可以显示声明模版参数
+//2.类模版需要显示声明模版参数
+//3.函数模版只能全特化，即指定所有的模版参数
+//4.类模版可以全特化也可以偏特化
+//
 
 int main(int argc, const char * argv[]) {
     MY_TUPLE::tuple<int, char, double> tu_(1, 'A', 3.1415926);
